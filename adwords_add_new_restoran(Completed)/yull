@@ -1,0 +1,6 @@
+from check_5plus import *
+len(checking)
+ch = OrderInfo.objects.filter(order__status="completed", order__datetime_created__range=["", ""], phone__in=checking).values("phone").annotate(dcount=Count("phone"))
+data=[]
+for k in ch:
+    data.append([k.get("phone"), k.get("dcount")])

@@ -1,0 +1,21 @@
+before = OrderInfo.objects.filter(order__status="completed", order__datetime_created__range=["", ""]).values("phone").annotate(dcount=Count("phone"))
+after = OrderInfo.objects.filter(order__status="completed", order__datetime_created__range=["", ""]).values("phone").annotate(dcount=Count("phone"))
+
+before_users=[]
+after_users=[]
+for i in before:
+    before_users.append(i.get("phone"))
+
+for i in after:
+    after_users.append(i.get("phone"))
+
+need=[]
+
+for k in after_users:
+    if k not in before_users:
+        need.append(k)
+
+order = OrderInfo.objects.filter(order__status="completed", phone__in=need).values("phone").annotate(dcount=Count("phone"), s=Sum("order__total_price"), margin=Sum("order__commission"))
+data=[]
+for k in order:
+    data.append([k.get("phone"), k.get("s"), k.get("margin"), k.get("dcount")])
