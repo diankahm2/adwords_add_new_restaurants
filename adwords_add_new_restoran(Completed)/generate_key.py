@@ -22,11 +22,21 @@ def main(id):
         city=data["city"] #город
         if (data["id"]==id): #айди ресторана, определяет для какого ресторана генерить ключевики
 
-            #n=re.sub(" '|!|`|№|«|»|’|(|)", "", data["title"])
-            n = re.sub(r"(^| )[^ ]*[^A-Za-z ][^ ]*(?=$| )", "", data["title"])
-
-            print("After Removing", n)
+            # #n=re.sub(" '|!|`|№|«|»|’|(|)", "", data["title"])
+            # #n = re.sub(r"(^| )[^ ]*[^A-Za-z ][^ ]*(?=$| )", "", data["title"])
+            # n  = re.sub(r'[^A-Za-z]', '', data["title"])
+            # print("name", data['title'])
+            # print("After Removing", n)
             #name1=data["title"].split(" ") #если ресторана название состоит из двух слов и добавлять перед каждым словом +
+
+            whitelist = set('abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ абвгдеёжзийклмнопрстуфхцчшщъыьэюя АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ' )
+            kek = ''.join(filter(whitelist.__contains__, data))
+
+
+            #print("name", data)
+            #print("After Removing", kek)
+            n= re.sub(' +', ' ', kek)
+            print("After removing musor from name", n)
             name1=n.split(" ")
 
             s=" +"
@@ -58,7 +68,7 @@ def main(id):
                 all_keywords.append(key33)
         #else:
             #print("NOT")
-
+    print(all_keywords)
     return (all_keywords) #возвращает лист всех ключевиков
 
 #if __name__ == '__main__':
